@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = "A backend service for the oiaioiiiai project"
+authors = ["Dennis Chen"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.13"
+fastapi = "*"
+uvicorn = "*"
+google-cloud-storage = "*"
+slack-sdk = "*"
+requests = "*"
+python-dotenv = "*"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+
+[tool.ruff]
+line-length = 88
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "N",
+    "D",
+    "UP",
+    "C4",
+    "B",
+    "A",
+]
+ignore = ["D100", "D104", "D105", "D107", "D203", "D212"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
