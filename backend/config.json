@@ -1,0 +1,28 @@
+{
+  "confluence_config": {
+    "enabled": true,
+    "schedule": "0 10 * * 1",
+    "confluence_url": "https://your-domain.atlassian.net/wiki/spaces/SPACE/pages/PAGE_ID",
+    "slack_channel": "C03QR0681V1",
+    "weekly_report_enabled": true,
+    "weekly_report_slack_channel": "C03QR0681V1"
+  },
+  "on_call_config": {
+    "enabled": true,
+    "schedule": "0 18 * * 5",
+    "slack_channel": "C03QR0681V1"
+  },
+  "on_call_schedule": {
+    "current_index": 0,
+    "roster": [
+      {
+        "name": "Dennis.Chen",
+        "slack_user_id": "U0208KS4339"
+      },
+      {
+        "name": "User Two",
+        "slack_user_id": "U67890"
+      }
+    ]
+  }
+}

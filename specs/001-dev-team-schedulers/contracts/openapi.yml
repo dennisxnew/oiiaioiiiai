@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: Development Team Automation Tool API
+  version: 1.0.0
+paths:
+  /schedule/confluence-weekly-report:
+    post:
+      summary: Trigger Confluence Report Creation
+      description: >-
+        To be called by a Cloud Scheduler job. This endpoint triggers the
+        workflow to create the weekly Confluence report.
+      responses:
+        '202':
+          description: Accepted. The job has been successfully triggered.
+        '500':
+          description: Internal Server Error.
+  /schedule/on-call-notification:
+    post:
+      summary: Trigger On-Call Notification
+      description: >-
+        To be called by a Cloud Scheduler job. This endpoint triggers the
+        workflow to send the weekly on-call notification to Slack.
+      responses:
+        '202':
+          description: Accepted. The job has been successfully triggered.
+        '500':
+          description: Internal Server Error.
+  /api/config:
+    get:
+      summary: Get Full Application Configuration
+      description: >-
+        Retrieves the entire configuration object from the GCS storage file.
+        Used by the admin frontend to populate settings.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        '500':
+          description: Internal Server Error.
+    put:
+      summary: Update Full Application Configuration
+      description: >-
+        Receives the entire configuration object from the admin frontend and
+        overwrites the file in GCS storage.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppConfig'
+      responses:
+        '200':
+          description: Configuration updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+        '400':
+          description: Bad Request. Invalid configuration object provided.
+        '500':
+          description: Internal Server Error.
+
+components:
+  schemas:
+    OnCallPerson:
+      type: object
+      properties:
+        name:
+          type: string
+        slack_user_id:
+          type: string
+    OnCallSchedule:
+      type: object
+      properties:
+        current_index:
+          type: integer
+        roster:
+          type: array
+          items:
+            $ref: '#/components/schemas/OnCallPerson'
+    ConfluenceConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        schedule:
+          type: string
+        confluence_url:
+          type: string
+        slack_channel:
+          type: string
+    OnCallConfig:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        schedule:
+          type: string
+        slack_channel:
+          type: string
+    AppConfig:
+      type: object
+      properties:
+        confluence_config:
+          $ref: '#/components/schemas/ConfluenceConfig'
+        on_call_config:
+          $ref: '#/components/schemas/OnCallConfig'
+        on_call_schedule:
+          $ref: '#/components/schemas/OnCallSchedule'
