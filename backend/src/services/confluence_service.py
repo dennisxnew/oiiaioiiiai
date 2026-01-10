@@ -1,6 +1,9 @@
 import datetime
 import re
+
+from .config_service import get_app_config
 from .confluence_client import ConfluenceClient
+from .slack_service import SlackService
 
 
 class ConfluenceService:
@@ -58,7 +61,8 @@ class ConfluenceService:
             version=copied_page["version"]["number"] + 1,
         )
 
-        return updated_page["_links"]["webui"]
+        new_weekly_report_url = f"https://{self.confluence_client.domain}{updated_page['_links']['webui']}"
+        return new_weekly_report_url
 
     def _find_or_create_root_page(self, year: int) -> tuple[dict, bool]:
         """Finds the root page for a given year, or creates it if it doesn't exist."""
@@ -153,3 +157,34 @@ class ConfluenceService:
         new_title = f"{new_prefix} ({start_str}-{end_str})"
         
         return new_title, next_monday
+
+
+def run_weekly_report_job():
+    """
+    Core logic to execute the Confluence weekly report generation.
+    This can be called by a scheduler or an HTTP request.
+    """
+    app_config = get_app_config()
+    confluence_config = app_config.confluence_config
+
+    if not confluence_config.weekly_report_enabled:
+        message = "Confluence page copying is disabled."
+        print(message)
+        return {"message": message}
+
+    confluence_service = ConfluenceService()
+    slack_service = SlackService()
+
+    try:
+        new_weekly_report_url = confluence_service.create_next_weekly_report()
+        message = f":uia_cat: Hi <!subteam^S03GP72G62J> 本週週報已長出來: <{new_weekly_report_url}|New Weekly Report> ，請記得週五前完成！"
+        slack_service.send_message(
+            channel=confluence_config.weekly_report_slack_channel,
+            message=message,
+        )
+        print(message)  # Log to console for scheduler visibility
+        return {"message": "Confluence page copy for next week triggered."}
+    except Exception as e:
+        error_message = f"Error running Confluence job: {e}"
+        print(error_message)
+        raise e

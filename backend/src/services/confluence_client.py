@@ -12,6 +12,7 @@ class ConfluenceClient:
         domain = os.getenv("CONFLUENCE_DOMAIN")
         if not domain:
             raise ValueError("CONFLUENCE_DOMAIN environment variable not set.")
+        self.domain = domain
         self.base_url = f"https://{domain}/wiki/rest/api"
         self.username = os.getenv("CONFLUENCE_USERNAME")
         self.api_token = os.getenv("CONFLUENCE_API_TOKEN")

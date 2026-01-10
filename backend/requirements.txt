@@ -6,3 +6,4 @@ requests
 pydantic-settings # Pydantic v2 needs this for BaseSettings
 python-crontab # For cron string validation/parsing if needed
 python-dotenv # For loading .env file
+apscheduler # For scheduling jobs

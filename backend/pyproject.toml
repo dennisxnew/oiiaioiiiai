@@ -12,6 +12,7 @@ google-cloud-storage = "*"
 slack-sdk = "*"
 requests = "*"
 python-dotenv = "*"
+apscheduler = "*"
 
 [tool.black]
 line-length = 88

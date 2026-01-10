@@ -30,6 +30,6 @@ ENV PYTHONPATH=/app
 EXPOSE 8080
 
 # Command to run the application
-# uvicorn runs from WORKDIR (/app/backend), so it finds `src.main:app`
+# uvicorn runs from WORKDIR (/app/backend), so it finds `src.fastapi:app`
 # The app's code finds `backend` via PYTHONPATH=/app
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "src.fastapi:app", "--host", "0.0.0.0", "--port", "8080"]
