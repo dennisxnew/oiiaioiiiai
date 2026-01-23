@@ -26,7 +26,7 @@ class OnCallService:
         on_call_person = on_call_schedule.roster[current_index]
 
         # Update Slack channel topic (description)
-        topic = f":uia_cat: 本週值班人員: {on_call_person.name}"
+        topic = f":uia_cat: 本週值班人員: <@{on_call_person.slack_user_id}>"
         self.slack_service.update_channel_description(
             channel=on_call_config.slack_channel, description=topic
         )

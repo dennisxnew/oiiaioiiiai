@@ -66,7 +66,7 @@ CONFLUENCE_DOMAIN="your-confluence-domain.atlassian.net" # e.g., your-company.at
 ### Running the Application
 
 ```bash
-uvicorn src.fastapi:app --reload
+uvicorn src.fastapi:app --port 9000 --reload
 ```
 
 The backend will be running at `http://127.0.0.1:8000`.

@@ -61,7 +61,7 @@ class ConfluenceService:
             version=copied_page["version"]["number"] + 1,
         )
 
-        new_weekly_report_url = f"https://{self.confluence_client.domain}{updated_page['_links']['webui']}"
+        new_weekly_report_url = f"https://{self.confluence_client.domain}/wiki{updated_page['_links']['tinyui']}"
         return new_weekly_report_url
 
     def _find_or_create_root_page(self, year: int) -> tuple[dict, bool]:
